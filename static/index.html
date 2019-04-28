@@ -3,10 +3,18 @@
 <head>
     <meta charset="utf-8" />
 <body>
-    <div id="button">
-        <input type="button" value="test" v-on:click="click">
+    <div id="addButton">
+    	<input type="button" value="add sketch" v-on:click="addSketch">
+    </div>
+    <div id="sketchList">
+    	<ol>
+            <a href="#" v-for="sketch in sketches">
+                <li v-bind:id="sketch._id">{{ sketch.title }}</li>              
+            </a>
+        </ol>
     </div>
     <script src="vue.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
