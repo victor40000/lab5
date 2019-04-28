@@ -1,21 +1,72 @@
-var currentId;
-var currentTitle;
-var currentText;
+var currentId = null;
 
 var addButton = new Vue({
     el: '#addButton',
     methods: {
         addSketch: function () {
-            
+            postSketch("New sketch", "#write your sketch here");
         }
     }
 });
+
+var saveButton = new Vue({
+    el: '#saveButton',
+    methods: {
+        saveSketch: function () {
+            if (currentId === null) return;
+            updateSketch(currentId, currentSketch.title, currentSketch.text);
+        }
+    }
+});
+
+var deleteButton = new Vue({
+    el: '#deleteButton',
+    methods: {
+        deleteSketch: function () {
+            if (currentId === null) return;
+            deleteSketch(currentId);
+        }
+    }
+});
+
+// var refreshButton = new Vue({
+//     el: '#refreshButton',
+//     methods: {
+//         refreshSketch: function () {
+//             markdownText.text = markdown.toHTML(currentSketch.text);
+//         }
+//     }
+// });
 
 
 var sketchList = new Vue({
     el: '#sketchList',
     data: {
         sketches: null
+    },
+    methods: {
+        chooseSketch: function (event) {
+            currentId = event.srcElement.id;
+            var sketch = this.sketches.find(sketch => sketch._id === currentId);
+            currentSketch.title = sketch.title;
+            currentSketch.text = sketch.text;
+            markdownText.text = markdown.toHTML(currentSketch.text);
+        }
+    }
+});
+
+var currentSketch = new Vue({
+    el: '#currentSketch',
+    data: {
+        title: "123",
+        text: "#aabbcc",
+    }
+});
+
+var markdownText = new Vue({
+    el: '#markdownText',
+    data: {
+        text: markdown.toHTML(currentSketch.text)
     }
 });
 
@@ -25,7 +76,7 @@ function getSketches(){
         contentType: "application/json",
         method: "GET",
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             sketchList.sketches = res;
         }
     })
@@ -62,7 +113,7 @@ function updateSketch(id, title, text) {
         }),
         success: function (res) {
             // console.log(res);
-            location.href = "/";
+            // location.href = "/";
         }
     })
 }
@@ -76,7 +127,7 @@ function deleteSketch(id) {
             id: id
         }),
         success: function (res) {
-            // console.log(res);
+            console.log(res);
             location.href = "/";
         }
     })

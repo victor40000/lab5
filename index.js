@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoClient = require("mongodb").MongoClient;
 var db = new mongoClient("mongodb://localhost:27017/", {useNewUrlParser: true});
+var objectId = require("mongodb").ObjectID;
 var application = express();
 var jsonParser = express.json();
 application.use(express.static(__dirname + "/static"));
@@ -25,8 +26,8 @@ application.post("/sketch", jsonParser, function(request, result){
     });
 });
 
-application.put("/sketch", jsonParser, function(request, result){
-    if(!request.body) return result.sendStatus(400);
+application.put("/sketch", jsonParser, function(request, res){
+    if(!request.body) return res.sendStatus(400);
     // console.log(request.body);
     var title = request.body.title;
     var text = request.body.text;
