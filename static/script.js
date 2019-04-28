@@ -5,6 +5,7 @@ var addButton = new Vue({
     methods: {
         addSketch: function () {
             postSketch("New sketch", "#write your sketch here");
+            console.log(123);
         }
     }
 });
@@ -58,8 +59,13 @@ var sketchList = new Vue({
 var currentSketch = new Vue({
     el: '#currentSketch',
     data: {
-        title: "123",
-        text: "#aabbcc",
+        title: "",
+        text: "",
+    },
+    methods: {
+        updateMarkdowm: function () {
+            markdownText.text = markdown.toHTML(currentSketch.text);
+        }
     }
 });
 
@@ -113,9 +119,10 @@ function updateSketch(id, title, text) {
         }),
         success: function (res) {
             // console.log(res);
-            // location.href = "/";
+            location.href = "/";
         }
     })
+
 }
 
 function deleteSketch(id) {
